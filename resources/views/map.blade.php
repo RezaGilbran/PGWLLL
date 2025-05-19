@@ -162,7 +162,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <script>
-        var map = L.map('map').setView([-5.29, 122.861], 13);
+        var map = L.map('map').setView([-7.76953, 110.38146], 13);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
