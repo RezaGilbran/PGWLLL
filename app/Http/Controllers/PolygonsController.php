@@ -11,28 +11,23 @@ class PolygonsController extends Controller
     {
         $this->polygons = new PolygonsModel();
     }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        //
+        $data = [
+            'title' => 'Map',
+        ];
+
+        return view('map', $data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-
         // validate data
         $request->validate([
             'name' => 'required|unique:polygons,name',
@@ -47,15 +42,11 @@ class PolygonsController extends Controller
             'geom_polygon.required' => 'Geometry is required',
         ]);
 
-        if (!is_dir('storage/images')) {
-            mkdir('./storage/images', 0777);
-        }
-
         // upload image
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $name_image = time() . "_polygon." . strtolower($image->getClientOriginalExtension());
-            $image->move('storage/images', $name_image);
+            $image->storeAs('images', $name_image, 'public');
         } else {
             $name_image = null;
         }
@@ -64,7 +55,7 @@ class PolygonsController extends Controller
             'geom' => $request->geom_polygon,
             'name' => $request->name,
             'description' => $request->description,
-            'image' => $name_image,
+            'image' => $name_image
         ];
 
         // create data
@@ -75,53 +66,36 @@ class PolygonsController extends Controller
         return redirect()->route('map')->with('success', 'Polygon has been added!');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         $data = [
-            'title' => 'Edit Pollygon',
+            'title' => 'Edit Polygon',
             'id' => $id,
         ];
 
         return view('edit-polygon', $data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         // validate data
-        $request->validate(
-            [
-                'name' => 'required|unique:polygons,name,' . $id,
-                'description' => 'required',
-                'geom_polygon' => 'required',
-                'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2408',
-            ],
-            [
-                'name.required' => 'Name is required',
-                'name.unique' => 'Name already exist',
-                'description.required' => 'Description is required',
-                'geom_polygon.required' => 'Polygon is required',
-            ]
-        );
-
-        // Create directory if not exist
-        if (!is_dir('storage/images')) {
-            mkdir('./storage/images', 0777);
-        }
-
+        $request->validate([
+            'name' => 'required|unique:polygons,name,' . $id,
+            'description' => 'required',
+            'geom_polygon' => 'required',
+            'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2408',
+        ],
+        [
+            'name.required' => 'Name is required',
+            'name.unique' => 'Name already exist',
+            'description.required' => 'Description is required',
+            'geom_polygon.required' => 'Polygon is required',
+        ]);
 
         // Get old image
         $old_image = $this->polygons->find($id)->image;
@@ -130,13 +104,11 @@ class PolygonsController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $name_image = time() . "_polygon." . strtolower($image->getClientOriginalExtension());
-            $image->move('storage/images', $name_image);
+            $image->storeAs('images', $name_image, 'public');
 
-            // Delete old image
-            if ($old_image != null) {
-                if (file_exists('./storage/images/' . $old_image)) {
-                    unlink('./storage/images/' . $old_image);
-                }
+            // Delete old image if exists
+            if ($old_image && file_exists(storage_path('app/public/images/' . $old_image))) {
+                unlink(storage_path('app/public/images/' . $old_image));
             }
         } else {
             $name_image = $old_image;
@@ -158,23 +130,19 @@ class PolygonsController extends Controller
         return redirect()->route('map')->with('success', 'Polygon has been updated');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $imagefile = $this->polygons->find($id)->image;
 
         if (!$this->polygons->destroy($id)) {
-            return redirect()->route('map')->with('error', 'Polygons failed to delete!');
-        }
-        // delete image
-        if ($imagefile != null) {
-            if (file_exists('./storage/images/' . $imagefile)) {
-                unlink('./storage/images/' . $imagefile);
-            }
+            return redirect()->route('map')->with('error', 'Polygon failed to delete!');
         }
 
-        return redirect()->route('map')->with('success', 'Polygons has been deleted!');
+        // delete image
+        if ($imagefile && file_exists(storage_path('app/public/images/' . $imagefile))) {
+            unlink(storage_path('app/public/images/' . $imagefile));
+        }
+
+        return redirect()->route('map')->with('success', 'Polygon has been deleted!');
     }
 }
