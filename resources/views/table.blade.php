@@ -1,153 +1,353 @@
 @extends('layouts/template')
 
+
+
+@section('styles')
+
+    <style>
+
+        .table th {
+
+            font-weight: 600;
+
+        }
+
+        .card-header h2 {
+
+            margin-bottom: 0;
+
+            font-size: 1.25rem;
+
+        }
+
+        .img-thumbnail-table {
+
+            max-width: 100px;
+
+            max-height: 60px;
+
+            object-fit: cover;
+
+            border-radius: 0.25rem;
+
+        }
+
+    </style>
+
+@endsection
+
+
+
 @section('content')
-    <div class="container py-4">
-        <div class="row mb-4">
-            <div class="col-12">
-                <h2 class="border-bottom pb-2">Data Tables</h2>
+
+    <div class="container py-5">
+
+        <h1 class="text-center mb-5">Data Tables</h1>
+
+
+
+        {{-- Table Point --}}
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-header bg-primary text-white">
+
+                <h2 class="h5 mb-0">Table Point</h2>
+
             </div>
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped table-hover align-middle" id="pointstable">
+
+                        <thead class="table-light">
+
+                            <tr>
+
+                                <th scope="col">No</th>
+
+                                <th scope="col">Name</th>
+
+                                <th scope="col">Description</th>
+
+                                <th scope="col">Image</th>
+
+                                <th scope="col">Created At</th>
+
+                                <th scope="col">Updated At</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @forelse ($points as $index => $p)
+
+                                <tr>
+
+                                    <td>{{ $loop->iteration }}</td>
+
+                                    <td>{{ $p->name }}</td>
+
+                                    <td>{{ Str::limit($p->description, 100) }}</td>
+
+                                    <td>
+
+                                        @if ($p->image)
+
+                                            <img src="{{ asset('storage/images/'.$p->image) }}" alt="{{ $p->name }}" class="img-thumbnail-table" title="{{ $p->image }}">
+
+                                        @else
+
+                                            <span class="text-muted">No Image</span>
+
+                                        @endif
+
+                                    </td>
+
+                                    <td>{{ $p->created_at->format('d M Y, H:i') }}</td>
+
+                                    <td>{{ $p->updated_at->format('d M Y, H:i') }}</td>
+
+                                </tr>
+
+                            @empty
+
+                                <tr>
+
+                                    <td colspan="6" class="text-center text-muted">No point data available.</td>
+
+                                </tr>
+
+                            @endforelse
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <!-- Points Table -->
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">
-                    <i class="fa-solid fa-location-dot text-danger me-2"></i> Points
-                </h5>
-                <span class="badge bg-primary">{{ count($points) }} items</span>
+
+
+        {{-- Table Polyline --}}
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-header bg-success text-white">
+
+                <h2 class="h5 mb-0">Table Polyline</h2>
+
             </div>
-            <div class="card-body p-0">
+
+            <div class="card-body">
+
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover mb-0">
+
+                    <table class="table table-striped table-hover align-middle" id="polylinestable">
+
                         <thead class="table-light">
+
                             <tr>
-                                <th>No</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Image</th>
-                                <th>Created At</th>
-                                <th>Updated At</th>
+
+                                <th scope="col">No</th>
+
+                                <th scope="col">Name</th>
+
+                                <th scope="col">Description</th>
+
+                                <th scope="col">Image</th>
+
+                                <th scope="col">Created At</th>
+
+                                <th scope="col">Updated At</th>
+
                             </tr>
+
                         </thead>
+
                         <tbody>
-                            @if(count($points) > 0)
-                                @foreach ($points as $p)
+
+                            @forelse ($polylines as $index => $p)
+
                                 <tr>
-                                    <td>{{ $p->id }}</td>
+
+                                    <td>{{ $loop->iteration }}</td>
+
                                     <td>{{ $p->name }}</td>
-                                    <td>{{ $p->description }}</td>
+
+                                    <td>{{ Str::limit($p->description, 100) }}</td>
+
                                     <td>
-                                        <img src="{{ asset('storage/images/' . $p->image) }}" alt="{{ $p->name }}"
-                                        class="img-fluid" style="max-width: 200px; max-height: 100px;" title="{{ $p->image }}">
+
+                                        @if ($p->image)
+
+                                            <img src="{{ asset('storage/images/'.$p->image) }}" alt="{{ $p->name }}" class="img-thumbnail-table" title="{{ $p->image }}">
+
+                                        @else
+
+                                            <span class="text-muted">No Image</span>
+
+                                        @endif
+
                                     </td>
-                                    <td>{{ $p->created_at }}</td>
-                                    <td>{{ $p->updated_at }}</td>
+
+                                    <td>{{ $p->created_at->format('d M Y, H:i') }}</td>
+
+                                    <td>{{ $p->updated_at->format('d M Y, H:i') }}</td>
+
                                 </tr>
-                                @endforeach
-                            @else
+
+                            @empty
+
                                 <tr>
-                                    <td colspan="6" class="text-center py-3">No points data available</td>
+
+                                    <td colspan="6" class="text-center text-muted">No polyline data available.</td>
+
                                 </tr>
-                            @endif
+
+                            @endforelse
+
                         </tbody>
+
                     </table>
+
                 </div>
+
             </div>
+
         </div>
 
-        <!-- Polylines Table -->
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">
-                    <i class="fa-solid fa-grip-lines text-success me-2"></i> Polylines
-                </h5>
-                <span class="badge bg-primary">{{ count($polylines) }} items</span>
+
+
+        {{-- Table Polygon --}}
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-header bg-info text-white">
+
+                <h2 class="h5 mb-0">Table Polygon</h2>
+
             </div>
-            <div class="card-body p-0">
+
+            <div class="card-body">
+
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover mb-0">
+
+                    <table class="table table-striped table-hover align-middle" id="polygonstable">
+
                         <thead class="table-light">
+
                             <tr>
-                                <th>No</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Image</th>
-                                <th>Created At</th>
-                                <th>Updated At</th>
+
+                                <th scope="col">No</th>
+
+                                <th scope="col">Name</th>
+
+                                <th scope="col">Description</th>
+
+                                <th scope="col">Image</th>
+
+                                <th scope="col">Created At</th>
+
+                                <th scope="col">Updated At</th>
+
                             </tr>
+
                         </thead>
+
                         <tbody>
-                            @if(count($polylines) > 0)
-                                @foreach ($polylines as $p)
+
+                            @forelse ($polygons as $index => $p)
+
                                 <tr>
-                                    <td>{{ $p->id }}</td>
+
+                                    <td>{{ $loop->iteration }}</td>
+
                                     <td>{{ $p->name }}</td>
-                                    <td>{{ $p->description }}</td>
+
+                                    <td>{{ Str::limit($p->description, 100) }}</td>
+
                                     <td>
-                                        <img src="{{ asset('storage/images/' . $p->image) }}" alt="{{ $p->name }}"
-                                        class="img-fluid" style="max-width: 200px; max-height: 100px;" title="{{ $p->image }}">
+
+                                        @if ($p->image)
+
+                                            <img src="{{ asset('storage/images/'.$p->image) }}" alt="{{ $p->name }}" class="img-thumbnail-table" title="{{ $p->image }}">
+
+                                        @else
+
+                                            <span class="text-muted">No Image</span>
+
+                                        @endif
+
                                     </td>
-                                    <td>{{ $p->created_at }}</td>
-                                    <td>{{ $p->updated_at }}</td>
+
+                                    <td>{{ $p->created_at->format('d M Y, H:i') }}</td>
+
+                                    <td>{{ $p->updated_at->format('d M Y, H:i') }}</td>
+
                                 </tr>
-                                @endforeach
-                            @else
+
+                            @empty
+
                                 <tr>
-                                    <td colspan="6" class="text-center py-3">No polylines data available</td>
+
+                                    <td colspan="6" class="text-center text-muted">No polygon data available.</td>
+
                                 </tr>
-                            @endif
+
+                            @endforelse
+
                         </tbody>
+
                     </table>
+
                 </div>
+
             </div>
+
         </div>
 
-        <!-- Polygons Table -->
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">
-                    <i class="fa-regular fa-square text-primary me-2"></i> Polygons
-                </h5>
-                <span class="badge bg-primary">{{ count($polygons) }} items</span>
-            </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>No</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Image</th>
-                                <th>Created At</th>
-                                <th>Updated At</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if(count($polygons) > 0)
-                                @foreach ($polygons as $p)
-                                <tr>
-                                    <td>{{ $p->id }}</td>
-                                    <td>{{ $p->name }}</td>
-                                    <td>{{ $p->description }}</td>
-                                    <td>
-                                        <img src="{{ asset('storage/images/' . $p->image) }}" alt="{{ $p->name }}"
-                                        class="img-fluid" style="max-width: 200px; max-height: 100px;" title="{{ $p->image }}">
-                                    </td>
-                                    <td>{{ $p->created_at }}</td>
-                                    <td>{{ $p->updated_at }}</td>
-                                </tr>
-                                @endforeach
-                            @else
-                                <tr>
-                                    <td colspan="6" class="text-center py-3">No polygons data available</td>
-                                </tr>
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+
 
     </div>
+
+@endsection
+
+
+
+@section('styles')
+
+<link rel="stylesheet" href="https://cdn.datatables.net/2.3.1/css/dataTables.dataTables.min.css">
+
+@endsection
+
+
+
+@section('scripts')
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="https://cdn.datatables.net/2.3.1/js/dataTables.min.js"></script>
+
+
+
+<script>
+
+    let table = new DataTable('#pointstable');
+
+    let table2 = new DataTable('#polylinestable');
+
+    let table3 = new DataTable('#polygonstable');
+
+</script>
+
+
+
 @endsection
