@@ -239,6 +239,7 @@
                     "Deskripsi: " + feature.properties.description + "<br>" +
                     "<img src='{{ asset('storage/images') }}/" + feature.properties.image +
                     "' width='200' alt=''>" + "<br>" +
+                    "<small>Dibuat oleh <strong>" + feature.properties.user_created + "</strong> <br>" +
                     "<div class='d-flex justify-content-between mt-4'>" +
                     "<a href='" + routeedit +
                     "' class='btn btn-warning btn-sm'><i class='fa-solid fa-pen-to-square'></i> Edit</a>" +
@@ -310,6 +311,7 @@
                     "Luas (km): " + Number(feature.properties.length_km).toFixed(2) + "<br>" +
                     "<img src='{{ asset('storage/images') }}/" + feature.properties.image +
                     "' width='200' alt=''>" + "<br>" +
+                    "<small>Dibuat oleh <strong>" + feature.properties.user_created + "</strong> <br>" +
                     "<div class='d-flex justify-content-between mt-4'>" +
                     "<a href='" + routeedit +
                     "' class='btn btn-warning btn-sm'><i class='fa-solid fa-pen-to-square'></i> Edit</a>" +

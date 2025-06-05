@@ -145,4 +145,4 @@ class PointsController extends Controller
 
         return redirect()->route('map')->with('success', 'Point has been deleted!');
     }
-}
+} 
