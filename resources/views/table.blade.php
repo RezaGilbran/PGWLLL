@@ -1,142 +1,153 @@
 @extends('layouts/template')
 
 @section('content')
-     <div class="container py-5">Add commentMore actions
-        <h1 class="text-center mb-5">Data Features Overview</h1>
-
-        {{-- Table Point --}}
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-primary text-white">
-                <h2 class="h5 mb-0">Table Point</h2>
+    <div class="container py-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h2 class="border-bottom pb-2">Data Tables</h2>
             </div>
-            <div class="card-body">
+        </div>
+
+        <!-- Points Table -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fa-solid fa-location-dot text-danger me-2"></i> Points
+                </h5>
+                <span class="badge bg-primary">{{ count($points) }} items</span>
+            </div>
+            <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover align-middle">
+                    <table class="table table-striped table-hover mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Image</th>
-                                <th scope="col">Created At</th>
-                                <th scope="col">Updated At</th>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Image</th>
+                                <th>Created At</th>
+                                <th>Updated At</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($points as $index => $p)
+                            @if(count($points) > 0)
+                                @foreach ($points as $p)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $p->id }}</td>
                                     <td>{{ $p->name }}</td>
-                                    <td>{{ Str::limit($p->description, 100) }}</td>
+                                    <td>{{ $p->description }}</td>
                                     <td>
-                                        @if ($p->image)
-                                            <img src="{{ asset('storage/images/'.$p->image) }}" alt="{{ $p->name }}" class="img-thumbnail-table" title="{{ $p->image }}">
-                                        @else
-                                            <span class="text-muted">No Image</span>
-                                        @endif
+                                        <img src="{{ asset('storage/images/' . $p->image) }}" alt="{{ $p->name }}"
+                                        class="img-fluid" style="max-width: 200px; max-height: 100px;" title="{{ $p->image }}">
                                     </td>
-                                    <td>{{ $p->created_at->format('d M Y, H:i') }}</td>
-                                    <td>{{ $p->updated_at->format('d M Y, H:i') }}</td>
+                                    <td>{{ $p->created_at }}</td>
+                                    <td>{{ $p->updated_at }}</td>
                                 </tr>
-                            @empty
+                                @endforeach
+                            @else
                                 <tr>
-                                    <td colspan="6" class="text-center text-muted">No point data available.</td>
+                                    <td colspan="6" class="text-center py-3">No points data available</td>
                                 </tr>
-                            @endforelse
+                            @endif
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        {{-- Table Polyline --}}
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-success text-white">
-                <h2 class="h5 mb-0">Table Polyline</h2>
+        <!-- Polylines Table -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fa-solid fa-grip-lines text-success me-2"></i> Polylines
+                </h5>
+                <span class="badge bg-primary">{{ count($polylines) }} items</span>
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover align-middle">
+                    <table class="table table-striped table-hover mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Image</th>
-                                <th scope="col">Created At</th>
-                                <th scope="col">Updated At</th>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Image</th>
+                                <th>Created At</th>
+                                <th>Updated At</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($polylines as $index => $p)
+                            @if(count($polylines) > 0)
+                                @foreach ($polylines as $p)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $p->id }}</td>
                                     <td>{{ $p->name }}</td>
-                                    <td>{{ Str::limit($p->description, 100) }}</td>
+                                    <td>{{ $p->description }}</td>
                                     <td>
-                                        @if ($p->image)
-                                            <img src="{{ asset('storage/images/'.$p->image) }}" alt="{{ $p->name }}" class="img-thumbnail-table" title="{{ $p->image }}">
-                                        @else
-                                            <span class="text-muted">No Image</span>
-                                        @endif
+                                        <img src="{{ asset('storage/images/' . $p->image) }}" alt="{{ $p->name }}"
+                                        class="img-fluid" style="max-width: 200px; max-height: 100px;" title="{{ $p->image }}">
                                     </td>
-                                    <td>{{ $p->created_at->format('d M Y, H:i') }}</td>
-                                    <td>{{ $p->updated_at->format('d M Y, H:i') }}</td>
+                                    <td>{{ $p->created_at }}</td>
+                                    <td>{{ $p->updated_at }}</td>
                                 </tr>
-                            @empty
+                                @endforeach
+                            @else
                                 <tr>
-                                    <td colspan="6" class="text-center text-muted">No polyline data available.</td>
+                                    <td colspan="6" class="text-center py-3">No polylines data available</td>
                                 </tr>
-                            @endforelse
+                            @endif
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        {{-- Table Polygon --}}
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-info text-white">
-                <h2 class="h5 mb-0">Table Polygon</h2>
+        <!-- Polygons Table -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fa-regular fa-square text-primary me-2"></i> Polygons
+                </h5>
+                <span class="badge bg-primary">{{ count($polygons) }} items</span>
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover align-middle">
+                    <table class="table table-striped table-hover mb-0">
                         <thead class="table-light">
                             <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Image</th>
-                                <th scope="col">Created At</th>
-                                <th scope="col">Updated At</th>
+                                <th>No</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Image</th>
+                                <th>Created At</th>
+                                <th>Updated At</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($polygons as $index => $p)
+                            @if(count($polygons) > 0)
+                                @foreach ($polygons as $p)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $p->id }}</td>
                                     <td>{{ $p->name }}</td>
-                                    <td>{{ Str::limit($p->description, 100) }}</td>
+                                    <td>{{ $p->description }}</td>
                                     <td>
-                                        @if ($p->image)
-                                            <img src="{{ asset('storage/images/'.$p->image) }}" alt="{{ $p->name }}" class="img-thumbnail-table" title="{{ $p->image }}">
-                                        @else
-                                            <span class="text-muted">No Image</span>
-                                        @endif
+                                        <img src="{{ asset('storage/images/' . $p->image) }}" alt="{{ $p->name }}"
+                                        class="img-fluid" style="max-width: 200px; max-height: 100px;" title="{{ $p->image }}">
                                     </td>
-                                    <td>{{ $p->created_at->format('d M Y, H:i') }}</td>
-                                    <td>{{ $p->updated_at->format('d M Y, H:i') }}</td>
+                                    <td>{{ $p->created_at }}</td>
+                                    <td>{{ $p->updated_at }}</td>
                                 </tr>
-                            @empty
+                                @endforeach
+                            @else
                                 <tr>
-                                    <td colspan="6" class="text-center text-muted">No polygon data available.</td>
+                                    <td colspan="6" class="text-center py-3">No polygons data available</td>
                                 </tr>
-                            @endforelse
+                            @endif
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+
     </div>
 @endsection
